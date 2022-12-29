@@ -7,7 +7,9 @@ const userSchema = new Schema<UserNS.UserBaseDocument>({
   email: { type: String, required: true, unique: true, index: true  },
   password: { type: String, require: true },
   gender: { type: String, enum: Object.values(UserNS.Gender), required: true},
-  avatar: String
+  avatar: { type: String, required: false}
+}, {
+   timestamps: true 
 });
 
 const User = model<UserNS.UserBaseDocument>('User', userSchema);
