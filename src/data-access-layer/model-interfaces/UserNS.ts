@@ -10,6 +10,8 @@ export namespace UserNS  {
         gender: Gender
     }
 
+    export type IUserKey = keyof IUser;
+
     export interface UserBaseDocument extends  IUser, Document {};
     
     export enum Gender {
