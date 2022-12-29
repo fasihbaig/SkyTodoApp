@@ -7,7 +7,9 @@ export namespace UserNS  {
         email: string;
         avatar?: string;
         password: string;
-        gender: Gender
+        gender: Gender,
+        isBlocked?: Boolean;
+        blockedDate?: Date;
     }
 
     export type IUserKey = keyof IUser;
