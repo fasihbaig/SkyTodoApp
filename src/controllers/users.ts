@@ -1,12 +1,13 @@
 import { faker } from "@faker-js/faker";
 import { Request, Response } from "express";
 
-import { UserService } from "../service";
+import { ServiceContainer, TYPES, UserService } from "../service";
 
 const userController = {
     createUser: async ( request: Request, response: Response ) => {   
         const {name, username, email, password, avatar, gender} = request.body;
-        const user = await UserService.createUser({
+        const userService = ServiceContainer.get<UserService>(TYPES.UserService);
+        const user = await userService.createUser({
             name,
             username,
             email,

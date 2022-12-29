@@ -7,7 +7,8 @@ export const asyncHandler = (handler: ( request: Request, response: Response) =>
             await handler(request, response);
         } catch (error: any) {
             if(error && error.statusCode) {
-                response.status(error.statusCode).send(error)
+                response.status(error.statusCode).send(error);
+                return;
             }
             response.status(StatusCodes.INTERNAL_SERVER_ERROR).send(error);
         }
