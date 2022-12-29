@@ -3,5 +3,5 @@
     "ext": ".ts,.js",
     "ignore": [],
     "exec": "node --require ts-node/register --inspect ./src/app.ts",
-    "delay": 1000
+    "delay": 3000
 }
