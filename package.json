@@ -1,5 +1,5 @@
 {
     "private": true,
-    "workspaces": ["backend"],
+    "workspaces": ["backend", "frontend"],
     "name": "SkyTodoApp"
 }
