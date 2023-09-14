@@ -1,5 +1,16 @@
 {
     "private": true,
-    "workspaces": ["backend", "frontend"],
-    "name": "SkyTodoApp"
+    "workspaces": {
+        "packages": [
+            "backend",
+            "frontend"
+        ]
+    },
+    "name": "SkyTodoApp",
+    "version": "1.0.0",
+    "description": "TODO Application for Demo Work",
+    "main": "dist/app.js",
+    "repository": "https://github.com/fasihbaig/SkyTodoApp.git",
+    "author": "Fasih Ullah Baig",
+    "license": "MIT"
 }
