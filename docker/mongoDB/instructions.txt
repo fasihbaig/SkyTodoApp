@@ -1,0 +1,15 @@
+After starting mongo DB container
+run below commands
+
+
+sudo docker exec -it c1 sh
+
+use admin
+
+db.auth("root")
+
+db.createUser({
+  user: "admin",
+  pwd: "12345678",
+  roles: ["root"]
+})
