@@ -1,0 +1,13 @@
+
+
+
+POST http://localhost:3000/api/authentication/login
+Content-Type: application/json
+
+{
+    "name": "fasih ullah",
+    "username": "fasihbaig_3@gmail.com",
+    "password": "asdf",
+    "email": "fasihbaig_3",
+    "gender": "male"
+}
