@@ -38,7 +38,7 @@ userRouter.post(
             .exists()
             .isIn(Object.values(UserNS.Gender))
             .trim()
-            .withMessage("Invalid Email"),
+            .withMessage("Invalid Gender."),
         ]),
         asyncHandler(userController.createUser)
 );

@@ -1,5 +1,4 @@
-import { connect, ConnectOptions, Mongoose, MongooseOptions } from "mongoose";
-import { ConnectionOptions } from "tls";
+import { connect, Mongoose } from "mongoose";
 
 export class DataBase {
     private databaseConnection: Mongoose | null = null;
@@ -23,6 +22,7 @@ export class DataBase {
      * @returns {string}
      */
     private static getMongoDBUri(): string {
+        console.log(process.env)
         return `mongodb://${process.env.DB_USER_NAME}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}`;
     }
 }
