@@ -2,8 +2,9 @@
     "private": true,
     "workspaces": {
         "packages": [
-            "backend",
-            "frontend"
+            "data-layer",
+            "frontend",
+            "backend-nest"
         ]
     },
     "name": "SkyTodoApp",
