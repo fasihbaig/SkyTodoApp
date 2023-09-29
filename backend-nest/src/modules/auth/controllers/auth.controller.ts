@@ -1,16 +1,19 @@
-import { Controller, Post } from '@nestjs/common';
+import { Body, Controller, Inject, Post } from '@nestjs/common';
+import { UserService } from '../../user/services';
+import { AuthorizationService } from '../service/authorization/authorization.service';
 
 @Controller('api/auth')
 export class AuthController {
 
-    
-    @Post("login")
-    public loginByCredentials(): any {
-        return {
-            name: "fasih",
-            id: 123,
-            token: "Dsfdfsdfsdf"
-        }
+    constructor(
+        private authorizationService: AuthorizationService
+    ) {
+  
     }
 
+    
+    @Post("login")
+    public loginByCredentials(@Body() requestData: any): any {
+        return this.authorizationService.processLoginHandler(requestData.email || requestData.username, requestData.password);
+    }
 }
