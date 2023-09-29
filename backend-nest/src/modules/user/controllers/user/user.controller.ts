@@ -1,4 +1,16 @@
-import { Controller } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
+import { UserCrudService, UserService } from '../../services';
 
-@Controller('user')
-export class UserController {}
+@Controller('api/user')
+export class UserController {
+
+    constructor(
+        private userCrudService: UserCrudService
+    ) {}
+
+    @Post("create")
+    async createUser(@Body() userDTO: any) {
+        const user = await this.userCrudService.createUserHandler(userDTO);
+        return user;
+    }
+}
