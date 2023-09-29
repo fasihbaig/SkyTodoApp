@@ -1,13 +1,13 @@
 
 
 
-POST http://localhost:3000/api/authentication/login
+POST http://localhost:3000/api/user/create
 Content-Type: application/json
 
 {
     "name": "fasih ullah",
-    "username": "fasihbaig_3@gmail.com",
+    "username": "fasihbaig_3",
     "password": "asdf",
-    "email": "fasihbaig_3",
+    "email": "fasihbaig_3@gmail.com",
     "gender": "male"
 }
