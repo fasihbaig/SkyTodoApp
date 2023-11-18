@@ -2,7 +2,7 @@
     "private": true,
     "workspaces": {
         "packages": [
-            "data-layer",
+            "@todo/data-layer",
             "frontend",
             "backend-nest"
         ]
