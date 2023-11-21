@@ -1,8 +1,3 @@
-import mongoose, { Model } from "mongoose"
-import { User } from "./models"
+import { DataBaseConnection } from "./connection";
 
-export type MongooseModel = {
-    User: Model<User>
-}
-
-export type DbLayer = {connection: typeof mongoose, models: MongooseModel }
+export type TB_ORM =  ReturnType<typeof DataBaseConnection.getDataLayerProvider>;
