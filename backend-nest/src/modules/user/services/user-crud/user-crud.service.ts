@@ -1,13 +1,11 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { MONGOOSE } from '../../../database/constants';
-import { DbLayer } from '../../../database/types';
-import { User } from 'src/modules/database/models';
+import { MONGOOSE, MONGOOSE_DB, User } from '@tm/data-layer';
 
 @Injectable()
 export class UserCrudService {
 
     constructor(
-        @Inject(MONGOOSE) private readonly dbLayer: DbLayer
+        @Inject(MONGOOSE) private readonly dbLayer: MONGOOSE_DB
     ) {}
 
     public createUserHandler(user: any): Promise<User> {

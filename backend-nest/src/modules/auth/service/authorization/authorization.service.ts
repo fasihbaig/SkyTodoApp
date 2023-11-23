@@ -1,11 +1,11 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { MONGOOSE } from '../../../database/constants';
-import { DbLayer } from '../../../database/types';
+
+import { MONGOOSE, MONGOOSE_DB  } from "@tm/data-layer";
 
 @Injectable()
 export class AuthorizationService {
     constructor(
-        @Inject(MONGOOSE) private readonly dbLayer: DbLayer
+        @Inject(MONGOOSE) private readonly dbLayer: MONGOOSE_DB
     ) {}
 
 

@@ -1,16 +1,15 @@
 import { Module } from '@nestjs/common';
 import { AuthModule, UserModule } from './modules';
+import { DataBaseConnection, MONGOOSE, MONGOOSE_DB } from "@tm/data-layer";
+import { DbLayerModule } from './modules/db-layer/db-layer.module';
 
 @Module({
-  imports: [UserModule, AuthModule],
-  providers: [
-    {
-      provide:  dataLayer.DB_LAYER,
-      useFactory: async (): Promise<dataLayer.DbLayer> =>{
-       return dataLayer.getDataLayerProvider()
-     }
-    },
+  imports: [
+    DbLayerModule.forRoot(),
+    UserModule, 
+    AuthModule
   ],
-   exports: [dataLayer. MONGOOSE ],
+  providers: [],
+//  exports: [ MONGOOSE ]
 })
 export class AppModule {}
