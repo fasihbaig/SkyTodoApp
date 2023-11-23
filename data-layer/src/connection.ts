@@ -1,17 +1,27 @@
-import mongoose from "mongoose";
+import mongoose, { ConnectOptions } from "mongoose";
 import { UserModel } from "./models";
 
-export class DataBaseConnection {
-       /**
-         * 
-         * @returns { string }
-       */
-    private static getMongoDBUri(): string {
-        return `mongodb://${process.env.DB_USER_NAME}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}`;
-    }
 
-    public static async getDataLayerProvider() {
-      const connection =  await mongoose.connect(DataBaseConnection.getMongoDBUri(), {});
+export class DataBaseConnection {
+
+    /**
+     * 
+     * @param { string } host 
+     * @param { string } userName 
+     * @param { string } password 
+     * @param { string } port 
+     * @param { ConnectOptions? } options
+     * @returns { Promise<MONGOOSE_DB> } 
+     */
+    public static async getDataLayerProvider(
+      host: string,
+      userName: string,
+      password: string,
+      port: string,
+      options?: ConnectOptions
+    ) {
+     const uri =  `mongodb://${userName}:${password}@${host}:${port}`;
+      const connection =  await mongoose.connect(uri, options || {});
       return {
           models:{  User:  connection.model('User', UserModel.schema) },
           connection

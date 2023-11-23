@@ -1,3 +1,3 @@
 import { DataBaseConnection } from "./connection";
 
-export type TB_ORM =  ReturnType<typeof DataBaseConnection.getDataLayerProvider>;
+export type MONGOOSE_DB =  Awaited<ReturnType<typeof DataBaseConnection.getDataLayerProvider>>;
