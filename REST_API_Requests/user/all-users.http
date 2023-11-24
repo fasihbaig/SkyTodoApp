@@ -1,0 +1,11 @@
+
+GET http://localhost:3000/api/user
+Content-Type: application/json
+
+{
+    "name": "fasih ullah",
+    "username": "fasihbaig_3",
+    "password": "asdf",
+    "email": "fasihbaig_3@gmail.com",
+    "gender": "male"
+}
