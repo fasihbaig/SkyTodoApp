@@ -1,5 +1,5 @@
 import { Global, Module } from '@nestjs/common';
-import { DataBaseConnection, MONGOOSE, MONGOOSE_DB } from '@tm/data-layer';
+import { DataBaseConnection, MONGOOSE } from '@tm/data-layer';
 
 @Global()
 @Module({
