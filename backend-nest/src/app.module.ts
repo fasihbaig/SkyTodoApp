@@ -1,15 +1,22 @@
 import { Module } from '@nestjs/common';
 import { AuthModule, UserModule } from './modules';
-import { DataBaseConnection, MONGOOSE, MONGOOSE_DB } from "@tm/data-layer";
 import { DbLayerModule } from './modules/db-layer/db-layer.module';
+import { ConfigModule } from "@nestjs/config";
+import { SharedModule } from './modules/shared/shared.module';
+import configurations from "./config";
 
 @Module({
   imports: [
     DbLayerModule.forRoot(),
     UserModule, 
-    AuthModule
+    AuthModule, 
+    SharedModule,
+    ConfigModule.forRoot({
+      load: [configurations],
+      isGlobal: true
+    })
   ],
   providers: [],
-//  exports: [ MONGOOSE ]
 })
+
 export class AppModule {}
