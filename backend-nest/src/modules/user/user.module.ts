@@ -6,7 +6,11 @@ import { DbLayerModule } from '../db-layer/db-layer.module';
 
 @Module({
     controllers: [ UserController ],
-    providers: [ UserService, UserCrudService, DbLayerModule ],
+    providers: [ 
+        UserService, 
+        UserCrudService, 
+      //  DbLayerModule 
+    ],
 })
 
 export class UserModule {}
