@@ -4,7 +4,8 @@
         "packages": [
             "data-layer",
             "frontend",
-            "backend-nest"
+            "backend-nest",
+            "libs/*"
         ]
     },
     "name": "TM-App",
