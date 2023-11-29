@@ -8,7 +8,8 @@ export default () => ({
       dbName: process.env.DB_NAME
     },
     auth: {
-        passwordSaltRound: parseInt(process.env.PASSWORD_SALT_ROUND, 10)  || 10
+        passwordSaltRound: parseInt(process.env.PASSWORD_SALT_ROUND, 10)  || 10,
+        jwtSecret: process.env.JWT_SECRET
     }
   } as GLOBAL_CONFIG
 );
@@ -23,6 +24,7 @@ export type GLOBAL_CONFIG = {
     dbName: string
   },
   auth: {
-      passwordSaltRound: number
+      passwordSaltRound: number,
+      jwtSecret: string
   }
 }
