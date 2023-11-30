@@ -11,6 +11,7 @@ import { DbLayerModule } from '../db-layer/db-layer.module';
         UserCrudService, 
       //  DbLayerModule 
     ],
+    exports: [ UserService]
 })
 
 export class UserModule {}
