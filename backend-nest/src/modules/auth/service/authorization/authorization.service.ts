@@ -5,13 +5,15 @@ import { JWT_PAYLOAD } from '../jwt-strategy/types';
 import { JwtService } from '@nestjs/jwt';
 import { omit } from "lodash";
 import { UserService } from '../../../user/services';
+import { RedisManager, RedisTimeMode } from "@tm/integrations";
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AuthorizationService {
     constructor(
         private jwtService: JwtService,
         private userService: UserService,
-        @Inject(MONGOOSE) private readonly dbLayer: MONGOOSE_DB
+        private configService: ConfigService
     ) {}
 
     /**
@@ -35,11 +37,22 @@ export class AuthorizationService {
             email: user.get("email"),
             username: user.get("username"),
             createdDate: new Date().toLocaleString()
-        });
+        }); 
+
+        await this.addTokenToRedis(jwtToken);
+
         return {
             user: omit(user.toObject(), ["password"]),
             token: jwtToken
         }
+    }
+
+    /**
+     * 
+     * @param { string } token 
+     */
+    private async addTokenToRedis(token: string): Promise<void> {
+       await RedisManager.getGlobalRedisInstance().addData(token, "1", RedisTimeMode.EX, this.configService.get<string>("auth.jwtTokenExpiryTimeSec"));
     }
 
     private generateWebToken(payload: JWT_PAYLOAD): Promise<string> {

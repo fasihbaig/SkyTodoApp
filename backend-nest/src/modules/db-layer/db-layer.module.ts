@@ -1,23 +1,25 @@
 import { Global, Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { DataBaseConnection, MONGOOSE } from '@tm/data-layer';
 
 @Global()
 @Module({
-    imports: []
+    imports: [ ConfigModule ]
 })
 export class DbLayerModule {
 
     static async forRoot() {
         const dbLayerProvider = {
             provide: MONGOOSE,
-            useFactory: async () => {
+            useFactory: async ( configService: ConfigService ) => {
               return DataBaseConnection.getDataLayerProvider(
-                  process.env.DB_HOST,
-                  process.env.DB_USER_NAME,
-                  process.env.DB_PASSWORD,
-                  process.env.DB_PORT
+                  configService.get("database.host"),
+                  configService.get("database.name"), 
+                  configService.get("database.password"),
+                  configService.get("database.port")
               );
-            }
+            },
+            inject: [ ConfigService ],
           };
 
         return {
