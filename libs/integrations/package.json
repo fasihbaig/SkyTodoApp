@@ -12,8 +12,6 @@
     "build": "npx tsc"
   },
   "dependencies": {
-    "@types/bcrypt": "^5.0.2",
-    "bcrypt": "^5.1.1",
     "lodash": "^4.17.21",
     "redis": "^4.6.11",
     "types": "^0.1.1",
