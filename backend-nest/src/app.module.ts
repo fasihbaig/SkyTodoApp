@@ -7,14 +7,14 @@ import configurations from "./config";
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      load: [configurations],
+      isGlobal: true
+    }),
     DbLayerModule.forRoot(),
     UserModule, 
     AuthModule, 
     SharedModule,
-    ConfigModule.forRoot({
-      load: [configurations],
-      isGlobal: true
-    })
   ],
   providers: [],
 })
