@@ -1,7 +1,8 @@
-import { RedisClientType, createClient, SetOptions } from 'redis';
+import { RedisClientType, createClient } from 'redis';
 import { promisify } from 'util';
 
 export class RedisManager {
+  private static logger:any = console;
   private static instance: RedisManager | null = null;
   private client: RedisClientType;
   private getAsync: (key: string) => Promise<string | null>;
@@ -13,29 +14,39 @@ export class RedisManager {
   ) => Promise<'OK'>;
   private delAsync: (key: string) => Promise<number>;
 
-  constructor() {
-    this.client = createClient();
-    this.client.on('error', (error: Error) => {
-      console.error(`Redis Error: ${error}`);
-    });
+  private constructor(url?: string) {
+    this.client = createClient(url? { url }: {});
 
-    // Promisify some Redis functions for better async handling
+    this.client.on('error', (error: Error) => {
+      RedisManager.logger.log(`Redis Error: ${error}`);
+    }).connect().then(async () => {
+      RedisManager.logger.log("Global redis client successfully instantiated.")
+    }).catch((err:Error) => RedisManager.logger.error(err));
     this.getAsync = promisify(this.client.get).bind(this.client);
     this.setAsync = promisify(this.client.set).bind(this.client);
     this.delAsync = promisify(this.client.del).bind(this.client);
-
-    this.client.set("df", "ddd", { })
   }
 
   /**
    * 
    * @returns { RedisManager }
    */
-  public static getInstance(): RedisManager {
-    if (!this.instance) {
-      this.instance = new RedisManager();
+  public static getGlobalRedisInstance(): RedisManager {
+    if(!RedisManager.instance) {
+        throw new Error("Please initialize global redis client using RedisManager class.");
     }
-    return this.instance;
+    return RedisManager.instance;
+  }
+
+  /**
+   * 
+   * @param { string } url optional
+   */
+  public static initializeGlobalRedisInstance(url?: string, logger?: any) {
+    if(logger) {
+      RedisManager.logger = logger;
+    }
+    this.instance = new RedisManager(url);
   }
 
   /**
