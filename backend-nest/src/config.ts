@@ -3,9 +3,10 @@ export default () => ({
     database: {
       host: process.env.DB_HOST,
       port: parseInt(process.env.DB_PORT, 10) || 5432,
-      name: process.env.DB_USER_NAME,
+      username: process.env.DB_USER_NAME,
       password: process.env.DB_PASSWORD,
-      dbName: process.env.DB_NAME
+      dbName: process.env.DB_NAME,
+      authSource: process.env.DB_AUTH_SOURCE
     },
     auth: {
         passwordSaltRound: parseInt(process.env.PASSWORD_SALT_ROUND, 10)  || 10,
@@ -20,9 +21,10 @@ export type GLOBAL_CONFIG = {
   database: {
     host: string,
     port: number,
-    name: string,
+    username: string,
     password: string,
-    dbName: string
+    dbName: string,
+    authSource: string
   },
   auth: {
       passwordSaltRound: number,
