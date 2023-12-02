@@ -14,9 +14,13 @@ export class DbLayerModule {
             useFactory: async ( configService: ConfigService ) => {
               return DataBaseConnection.getDataLayerProvider(
                   configService.get("database.host"),
-                  configService.get("database.name"), 
+                  configService.get("database.username"), 
                   configService.get("database.password"),
-                  configService.get("database.port")
+                  configService.get("database.port"),
+                  configService.get("authSource"),
+                {
+                    dbName: configService.get("database.dbName")
+                }
               );
             },
             inject: [ ConfigService ],

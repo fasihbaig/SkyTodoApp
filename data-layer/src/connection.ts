@@ -18,9 +18,19 @@ export class DataBaseConnection {
       userName: string,
       password: string,
       port: string,
+      authSource?: string,
       options?: ConnectOptions
     ) {
-     const uri =  `mongodb://${userName}:${password}@${host}:${port}`;
+      //example uri:  mongodb://root:12345678@localhost:27017/TempTestDB?authMechanism=DEFAULT&authSource=admin
+      let uri =  `mongodb://${userName}:${password}@${host}:${port}/`;
+      if(options && options.dbName) {
+        uri += options.dbName;
+      };
+
+      if(authSource) {
+        uri += `?authMechanism=DEFAULT&authSource=${authSource}`
+      }
+      console.log(`DB URI: ${uri.replace(password, "********")}`)
       const connection =  await mongoose.connect(uri, options || {});
       return {
           models:{  User:  connection.model('User', UserModel.schema) },
