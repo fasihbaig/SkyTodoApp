@@ -1,12 +1,17 @@
-After starting mongo DB container
+After starting mongo DB container for the first time 
 run below commands
 
+sudo docker exec -it <container id> sh
 
-sudo docker exec -it c1 sh
+mongosh 
 
 use admin
 
 db.auth("root")
+password: 12345678 
+
+use TaskManagerDB
+db.createCollection("users)
 
 db.createUser({
   user: "admin",
