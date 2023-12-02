@@ -52,9 +52,14 @@ export class AuthorizationService {
      * @param { string } token 
      */
     private async addTokenToRedis(token: string): Promise<void> {
-       await RedisManager.getGlobalRedisInstance().addData(token, "1", RedisTimeMode.EX, this.configService.get<string>("auth.jwtTokenExpiryTimeSec"));
+       await RedisManager.getGlobalRedisInstance().addData(token, "1", this.configService.get<string>("auth.jwtTokenExpiryTimeSec"));
     }
 
+    /**
+     * 
+     * @param { JWT_PAYLOAD } payload 
+     * @returns { Promise<string> }
+     */
     private generateWebToken(payload: JWT_PAYLOAD): Promise<string> {
         return this.jwtService.signAsync(payload);
     }
