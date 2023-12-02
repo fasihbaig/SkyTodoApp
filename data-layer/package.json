@@ -1,0 +1,25 @@
+{
+  "name": "@tm/data-layer",
+  "version": "1.0.0",
+  "main": "./build/index.js",
+  "types": "./build/index.d.ts",
+  "files": ["./build"],
+  "license": "MIT",
+  "scripts": {
+    "lint": "eslint . --ext .ts",
+    "build": "npx tsc"
+  },
+  "dependencies": {
+    "lodash": "^4.17.21",
+    "mongoose": "^6.8.1",
+    "types": "^0.1.1",
+    "typescript": "^4.9.4"
+  },
+  "devDependencies": {
+    "@nestjs/cli": "^10.1.17",
+    "@types/compression": "^1.7.2",
+    "@types/faker": "^6.6.9",
+    "@types/node": "^18.11.17",
+    "ts-node": "^10.9.1"
+  }
+}

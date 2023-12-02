@@ -2,11 +2,13 @@
     "private": true,
     "workspaces": {
         "packages": [
-            "backend",
-            "frontend"
+            "data-layer",
+            "frontend",
+            "backend-nest",
+            "libs/*"
         ]
     },
-    "name": "SkyTodoApp",
+    "name": "TM-App",
     "version": "1.0.0",
     "description": "TODO Application for Demo Work",
     "main": "dist/app.js",

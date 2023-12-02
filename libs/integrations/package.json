@@ -1,0 +1,24 @@
+{
+  "name": "@tm/integrations",
+  "main": "./build/index.js",
+  "types": "./build/index.d.ts",
+  "files": [
+    "./build"
+  ],
+  "version": "1.0.0",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "build": "npx tsc"
+  },
+  "dependencies": {
+    "lodash": "^4.17.21",
+    "redis": "^4.6.11",
+    "types": "^0.1.1",
+    "typescript": "^4.9.4"
+  },
+  "devDependencies": {
+    "@types/faker": "^6.6.9",
+    "@types/node": "^18.11.17"
+  }
+}
