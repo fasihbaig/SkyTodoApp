@@ -1,11 +1,22 @@
+@hostname = localhost
+@port = 3000
+@host = {{hostname}}:{{port}}
+@contentType = application/json
 
-GET http://localhost:3000/api/user
-Content-Type: application/json
+# @name login
+POST http://{{host}}/api/auth/login
+Content-Type: {{contentType}}
 
 {
-    "name": "fasih ullah",
-    "username": "fasihbaig_3",
     "password": "asdf",
-    "email": "fasihbaig_3@gmail.com",
-    "gender": "male"
+    "email": "fasihbaig_5@gmail.com"
 }
+
+###
+
+@authToken = {{login.response.body.token}}
+
+# @name allUsers
+GET http://{{host}}/api/user
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
