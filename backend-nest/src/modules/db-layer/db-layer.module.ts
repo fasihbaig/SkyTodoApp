@@ -17,7 +17,7 @@ export class DbLayerModule {
                   configService.get("database.username"), 
                   configService.get("database.password"),
                   configService.get("database.port"),
-                  configService.get("authSource"),
+                  configService.get("database.authSource"),
                 {
                     dbName: configService.get("database.dbName")
                 }

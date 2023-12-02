@@ -62,7 +62,8 @@ const UserSchema = new Schema({
       default: null
     },
   }, {
-     timestamps: true 
+     timestamps: true,
+    collection: "users"
 });
 
 export const UserModel = model<User>('User', UserSchema);
