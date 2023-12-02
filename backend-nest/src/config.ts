@@ -11,7 +11,7 @@ export default () => ({
     auth: {
         passwordSaltRound: parseInt(process.env.PASSWORD_SALT_ROUND, 10)  || 10,
         jwtSecret: process.env.JWT_SECRET,
-        jwtTokenExpiryTimeSec :process.env.JWT_TOKEN_EXPIRY_TIME_SEC
+        jwtTokenExpiryTimeSec : parseInt(process.env.JWT_TOKEN_EXPIRY_TIME_SEC, 10) || 3600
     }
   } as GLOBAL_CONFIG
 );

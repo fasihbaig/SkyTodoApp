@@ -12,6 +12,11 @@ async function bootstrap() {
 
   RedisManager.initializeGlobalRedisInstance();
 
+  // debugger middleware
+  // app.use((req, res, next) => {
+  //   next()
+  // });
+
   app.useGlobalFilters(new ApiExceptionHandler());
 
   await app.listen( process.env.PORT || 3000);
