@@ -5,14 +5,6 @@ export class RedisManager {
   private static logger:any = console;
   private static instance: RedisManager | null = null;
   private client: RedisClientType;
-  private getAsync: (key: string) => Promise<string | null>;
-  private setAsync: (
-    key: string,
-    value: string,
-    mode?: string,
-    duration?: number | string,
-  ) => Promise<'OK'>;
-  private delAsync: (key: string) => Promise<number>;
 
   private constructor(url?: string) {
     this.client = createClient(url? { url }: {});
@@ -22,9 +14,6 @@ export class RedisManager {
     }).connect().then(async () => {
       RedisManager.logger.log("Global redis client successfully instantiated.")
     }).catch((err:Error) => RedisManager.logger.error(err));
-    this.getAsync = promisify(this.client.get).bind(this.client);
-    this.setAsync = promisify(this.client.set).bind(this.client);
-    this.delAsync = promisify(this.client.del).bind(this.client);
   }
 
   /**
@@ -53,20 +42,20 @@ export class RedisManager {
    * 
    * @param { string } key 
    * @param { string } value 
-   * @param { RedisTimeMode } mode 
-   * @param duration 
+   * @param { string } duration 
+   * @param { RedisTimeMode } mode // option and default value is EX 
    */
   async addData(
     key: string,
     value: any,
-    mode?: RedisTimeMode, // Optional parameter for Redis SET command mode (e.g., 'EX' for seconds, 'PX' for milliseconds)
     duration?: number | string, // Optional parameter for the expiration time (either in seconds or with a suffix like 'ms' for milliseconds)
+    mode:RedisTimeMode = RedisTimeMode.EX  // Optional parameter for Redis SET command mode (e.g., 'EX' for seconds, 'PX' for milliseconds) default value is EX
   ): Promise<void> {
-    const serializedValue = JSON.stringify(value);
+    const serializedValue = typeof value !== "string"? JSON.stringify(value): value;
     if (mode && duration) {
-      await this.setAsync(key, serializedValue, mode, duration);
+      await this.client.set(key, serializedValue, { [mode]: duration });
     } else {
-      await this.setAsync(key, serializedValue);
+      await this.client.set(key, serializedValue);
     }
   }
 
@@ -76,7 +65,7 @@ export class RedisManager {
    * @returns { Promise<T | null> }
    */
   async getData<T>(key: string): Promise<T | null> {
-    const data = await this.getAsync(key);
+    const data = await this.client.get(key);
     return data ? JSON.parse(data) : null;
   }
 
@@ -85,17 +74,24 @@ export class RedisManager {
    * @param { string } key 
    */
   async deleteData(key: string): Promise<void> {
-    await this.delAsync(key);
+    await this.client.del(key);
   }
 
   /**
    * 
    * @param { string } key 
    * @param { string } value 
+   * @param { string } duration 
+   * @param { RedisTimeMode } mode // option and default value is EX 
    */
-  async replaceData(key: string, value: any): Promise<void> {
+  async replaceData(
+    key: string, 
+    value: any,
+    duration?: number | string, // Optional parameter for the expiration time (either in seconds or with a suffix like 'ms' for milliseconds)
+    mode: RedisTimeMode = RedisTimeMode.EX  // Optional parameter for Redis SET command mode (e.g., 'EX' for seconds, 'PX' for milliseconds) default value is EX
+  ): Promise<void> {
     await this.deleteData(key);
-    await this.addData(key, value);
+    await this.addData(key, value, duration, mode);
   }
 }
 
