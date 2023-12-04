@@ -1,16 +1,16 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable, forwardRef } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { JWT_PAYLOAD } from './types';
-import { UserService } from 'src/modules/user/services';
-import { User } from '@tm/data-layer';
+import { UserService } from '../../../modules/user';
+import { MONGOOSE, MONGOOSE_DB, User } from '@tm/data-layer';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()
-export class JwtStrategyService extends PassportStrategy(Strategy) {
+export class JwtStrategy extends PassportStrategy(Strategy) {
     
     constructor( 
-        private userService: UserService,
+        @Inject(MONGOOSE) private readonly dbLayer: MONGOOSE_DB,
         private configService: ConfigService
         ) {
         super({
@@ -26,11 +26,23 @@ export class JwtStrategyService extends PassportStrategy(Strategy) {
      * @returns { Promise<User> }
      */
     async validate(payload: JWT_PAYLOAD): Promise<User> {
-        const user = await this.userService.getUserById(payload.id);
+        const user = await this.getUserById(payload.id);
         if(!user) {
             throw new Error("Invalid token");
         }
 
         return user;
+    }
+
+      /**
+     * 
+     * @param { string } id 
+     * @returns { Promise<User | null> }
+     */
+      private getUserById(id: string): Promise<User | null> {
+        const { User } = this.dbLayer.models;
+        return User.findOne({
+            id: {  $eq : id },
+        }).exec()
     }
 }

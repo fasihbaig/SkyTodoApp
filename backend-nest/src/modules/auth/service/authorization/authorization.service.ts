@@ -1,19 +1,19 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, forwardRef } from '@nestjs/common';
 import { MONGOOSE, MONGOOSE_DB, User  } from "@tm/data-layer";
 import { TextHashManager } from "@tm/common";
-import { JWT_PAYLOAD } from '../jwt-strategy/types';
+import { JWT_PAYLOAD } from '../../../../nest-common-utils/strategies/jwt/types';
 import { JwtService } from '@nestjs/jwt';
 import { omit } from "lodash";
-import { UserService } from '../../../user/services';
-import { RedisManager, RedisTimeMode } from "@tm/integrations";
+import { RedisManager } from "@tm/integrations";
 import { ConfigService } from '@nestjs/config';
+import { UserService } from '../../../user';
 
 @Injectable()
 export class AuthorizationService {
     constructor(
-        private jwtService: JwtService,
-        private userService: UserService,
-        private configService: ConfigService
+       private jwtService: JwtService,
+       private configService: ConfigService,
+       @Inject(MONGOOSE) private readonly dbLayer: MONGOOSE_DB
     ) {}
 
     /**
@@ -22,7 +22,7 @@ export class AuthorizationService {
      * @param { string } password 
      */
     public async processLoginHandler(email: string, password: string) {
-        const user = await this.userService.getUserByEmail(email);
+        const user =  await this.getUserByEmail(email);
         if(!user) {
             throw new Error("User not found.")
         }
@@ -32,6 +32,21 @@ export class AuthorizationService {
             throw new Error("Invalid User Credentials.")
         }
 
+        const jwtToken = await this.generateAndSaveAuthToken(user);
+
+        return {
+            user: omit(user.toObject(), ["password"]),
+            token: jwtToken
+        }
+    }
+
+
+    /**
+     * 
+     * @param { User } user 
+     * @returns { Promise<string> }
+     */
+    public async generateAndSaveAuthToken(user: User): Promise<string> {
         const jwtToken = await this.generateWebToken({
             id: user.get("id"),
             email: user.get("email"),
@@ -41,10 +56,7 @@ export class AuthorizationService {
 
         await this.addTokenToRedis(jwtToken);
 
-        return {
-            user: omit(user.toObject(), ["password"]),
-            token: jwtToken
-        }
+        return jwtToken  
     }
 
     /**
@@ -61,6 +73,19 @@ export class AuthorizationService {
      * @returns { Promise<string> }
      */
     private generateWebToken(payload: JWT_PAYLOAD): Promise<string> {
-        return this.jwtService.signAsync(payload);
+        return this.jwtService.signAsync(payload, {secret: this.configService.get<string>("auth.jwtSecret")});
+    }
+
+      /**
+     * 
+     * @param { string } email 
+     * @returns { Promise<User | null> }
+     */
+      private getUserByEmail(email: string): Promise< User | null> {
+        const { User } = this.dbLayer.models;
+        return User.findOne({
+            email: {  $eq : email },
+            isBlocked: { $ne: true }
+        }, ["id","age", "email", "username", "password"]).exec()
     }
 }
