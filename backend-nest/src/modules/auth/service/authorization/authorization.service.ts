@@ -13,6 +13,7 @@ export class AuthorizationService {
     constructor(
        private jwtService: JwtService,
        private configService: ConfigService,
+       private userService: UserService,
        @Inject(MONGOOSE) private readonly dbLayer: MONGOOSE_DB
     ) {}
 
@@ -22,7 +23,7 @@ export class AuthorizationService {
      * @param { string } password 
      */
     public async processLoginHandler(email: string, password: string) {
-        const user =  await this.getUserByEmail(email);
+        const user =  await this.userService.getUserByEmail(email);
         if(!user) {
             throw new Error("User not found.")
         }
@@ -74,18 +75,5 @@ export class AuthorizationService {
      */
     private generateWebToken(payload: JWT_PAYLOAD): Promise<string> {
         return this.jwtService.signAsync(payload, {secret: this.configService.get<string>("auth.jwtSecret")});
-    }
-
-      /**
-     * 
-     * @param { string } email 
-     * @returns { Promise<User | null> }
-     */
-      private getUserByEmail(email: string): Promise< User | null> {
-        const { User } = this.dbLayer.models;
-        return User.findOne({
-            email: {  $eq : email },
-            isBlocked: { $ne: true }
-        }, ["id","age", "email", "username", "password"]).exec()
     }
 }

@@ -6,18 +6,15 @@ import { MONGOOSE, MONGOOSE_DB, User } from '@tm/data-layer';
 export class UserService {
 
     constructor(
-        @Inject(MONGOOSE) private readonly dbLayer: MONGOOSE_DB,
-        private config: ConfigService
-    ) {
-
-    }
-
-     /**
+        @Inject(MONGOOSE) private readonly dbLayer: MONGOOSE_DB
+    ) {}
+    
+    /**
      * 
      * @param { string } email 
      * @returns { Promise<User | null> }
      */
-     public getUserByEmail(email: string): Promise< User | null> {
+    public getUserByEmail(email: string): Promise< User | null> {
         const { User } = this.dbLayer.models;
         return User.findOne({
             email: {  $eq : email },
