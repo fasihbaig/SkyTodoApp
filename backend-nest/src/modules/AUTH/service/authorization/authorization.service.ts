@@ -1,17 +1,16 @@
 import { Inject, Injectable, forwardRef } from '@nestjs/common';
 import { MONGOOSE, MONGOOSE_DB, User  } from "@tm/data-layer";
 import { TextHashManager } from "@tm/common";
-import { JWT_PAYLOAD } from '../../../../nest-common-utils/strategies/jwt/types';
-import { JwtService } from '@nestjs/jwt';
 import { omit } from "lodash";
 import { RedisManager } from "@tm/integrations";
 import { ConfigService } from '@nestjs/config';
-import { UserService } from '../../../user';
+import { UserService } from '../../../USER';
+import { JwtAuthService } from '../jwt-auth';
 
 @Injectable()
 export class AuthorizationService {
     constructor(
-       private jwtService: JwtService,
+       private jwtAuthService: JwtAuthService,
        private configService: ConfigService,
        private userService: UserService,
        @Inject(MONGOOSE) private readonly dbLayer: MONGOOSE_DB
@@ -48,7 +47,7 @@ export class AuthorizationService {
      * @returns { Promise<string> }
      */
     public async generateAndSaveAuthToken(user: User): Promise<string> {
-        const jwtToken = await this.generateWebToken({
+        const jwtToken = await this.jwtAuthService.createNewToken({
             id: user.get("id"),
             email: user.get("email"),
             username: user.get("username"),
@@ -68,12 +67,4 @@ export class AuthorizationService {
        await RedisManager.getGlobalRedisInstance().addData(token, "1", this.configService.get<string>("auth.jwtTokenExpiryTimeSec"));
     }
 
-    /**
-     * 
-     * @param { JWT_PAYLOAD } payload 
-     * @returns { Promise<string> }
-     */
-    private generateWebToken(payload: JWT_PAYLOAD): Promise<string> {
-        return this.jwtService.signAsync(payload, {secret: this.configService.get<string>("auth.jwtSecret")});
-    }
 }

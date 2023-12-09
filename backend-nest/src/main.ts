@@ -8,7 +8,9 @@ import { ApiExceptionHandler } from "./nest-common-utils";
 import { RedisManager } from "@tm/integrations";
 
 async function bootstrap() {
-  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
+    snapshot: true
+  });
 
   RedisManager.initializeGlobalRedisInstance();
 

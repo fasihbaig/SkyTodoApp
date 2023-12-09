@@ -6,7 +6,7 @@ import { UserCrudService, UserService } from './services';
    imports: [ ],
     controllers: [ UserController ],
     providers: [ 
-        UserService, 
+        UserService,
         UserCrudService
     ],
     exports: [ UserService ]

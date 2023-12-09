@@ -3,7 +3,7 @@ import { MONGOOSE, MONGOOSE_DB, User } from '@tm/data-layer';
 import { omit } from "lodash";
 import { TextHashManager } from "@tm/common";
 import { ConfigService } from '@nestjs/config';
-import { AuthorizationService } from '../../../auth';
+import { AuthorizationService } from '../../../AUTH';
 import { ModuleRef } from '@nestjs/core';
 
 

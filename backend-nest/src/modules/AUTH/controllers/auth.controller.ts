@@ -1,5 +1,4 @@
 import { Body, Controller, Inject, Post } from '@nestjs/common';
-import { UserService } from '../../user/services';
 import { AuthorizationService } from '../service/authorization/authorization.service';
 
 @Controller('api/auth')

@@ -1,37 +1,40 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
 import { AuthModule, UserModule } from './modules';
-import { DbLayerModule } from './modules/db-layer/db-layer.module';
+import { DbLayerModule } from './modules/DB-LAYER/db-layer.module';
 import { ConfigModule, ConfigService } from "@nestjs/config";
-import { SharedModule } from './modules/shared/shared.module';
+import { SharedModule } from './modules/SHARED-MODULE/shared.module';
 
 import configurations from "./config";
-import { JwtModule } from '@nestjs/jwt';
-import { JwtStrategy } from './nest-common-utils';
+import { UserDataMiddleware } from './nest-common-utils/middlewares';
+import { DevtoolsModule } from '@nestjs/devtools-integration';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 
-const providers = [ JwtStrategy ]
+const providers = [ ConfigService ]
 
 @Module({
   imports: [
-    JwtModule.registerAsync({
-        useFactory: async (configService: ConfigService) => ({ 
-            secret: configService.get<string>("auth.jwtSecret"),
-            signOptions: { expiresIn: configService.get<string>("auth.jwtTokenExpiryTimeSec") }  
-        }),
-        inject: [ConfigService],
-    }),
     ConfigModule.forRoot({
       load: [configurations],
       isGlobal: true
+    }),
+    DevtoolsModule.register({
+        http: process.env.NODE_ENV !== 'production'
     }),
     DbLayerModule.forRoot(),
     UserModule, 
     AuthModule, 
     SharedModule, 
+    EventEmitterModule.forRoot()
   ],
   providers: [ 
-    ConfigService,  
-    ...providers
+    ...providers,
   ],
 })
 
 export class AppModule {}
+// implements NestModule {
+//   configure(consumer: MiddlewareConsumer) {
+//     consumer.apply(UserDataMiddleware).forRoutes({ path: "*", method: RequestMethod.ALL})
+//   }
+
+// }
