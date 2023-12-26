@@ -4,6 +4,7 @@ import { UserModule, UserService } from '../USER';
 import { JwtModule, JwtService } from '@nestjs/jwt';
 import { AuthorizationService, JwtAuthService } from './service';
 import { ConfigService } from '@nestjs/config';
+import { ApiTimeInterceptor } from '../../nest-common-utils/interceptors';
 
 
 @Module({
@@ -12,7 +13,8 @@ import { ConfigService } from '@nestjs/config';
         AuthorizationService, 
         JwtService,
         UserService,
-        JwtAuthService
+        JwtAuthService,
+        ApiTimeInterceptor
     ],
     imports: [  
         JwtModule.registerAsync({

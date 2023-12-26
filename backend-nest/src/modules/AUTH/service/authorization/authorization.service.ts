@@ -1,4 +1,4 @@
-import { Inject, Injectable, forwardRef } from '@nestjs/common';
+import { Inject, Injectable, UseInterceptors, forwardRef } from '@nestjs/common';
 import { MONGOOSE, MONGOOSE_DB, User  } from "@tm/data-layer";
 import { TextHashManager } from "@tm/common";
 import { omit } from "lodash";
@@ -6,7 +6,9 @@ import { RedisManager } from "@tm/integrations";
 import { ConfigService } from '@nestjs/config';
 import { UserService } from '../../../USER';
 import { JwtAuthService } from '../jwt-auth';
+import { ApiTimeInterceptor } from '../../../../nest-common-utils/interceptors/';
 
+@UseInterceptors(ApiTimeInterceptor)
 @Injectable()
 export class AuthorizationService {
     constructor(

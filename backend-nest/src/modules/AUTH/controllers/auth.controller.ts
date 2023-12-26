@@ -1,6 +1,8 @@
-import { Body, Controller, Inject, Post } from '@nestjs/common';
+import { Body, Controller, Inject, Post, UseInterceptors } from '@nestjs/common';
 import { AuthorizationService } from '../service/authorization/authorization.service';
+import { ApiTimeInterceptor } from '../../../nest-common-utils/interceptors';
 
+@UseInterceptors(ApiTimeInterceptor)
 @Controller('api/auth')
 export class AuthController {
 
