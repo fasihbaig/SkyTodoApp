@@ -15,7 +15,6 @@ export class AuthorizationService {
        private jwtAuthService: JwtAuthService,
        private configService: ConfigService,
        private userService: UserService,
-       @Inject(MONGOOSE) private readonly dbLayer: MONGOOSE_DB
     ) {}
 
     /**

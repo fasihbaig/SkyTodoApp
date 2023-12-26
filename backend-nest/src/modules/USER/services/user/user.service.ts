@@ -17,7 +17,10 @@ export class UserService {
     public getUserByEmail(email: string): Promise< User | null> {
         const { User } = this.dbLayer.models;
         return User.findOne({
-            email: {  $eq : email },
+            $or: [
+                {username: {  $eq : email }},
+                {email: {  $eq : email }},
+            ],
             isBlocked: { $ne: true }
         }, ["id","age", "email", "username", "password"]).exec()
     }

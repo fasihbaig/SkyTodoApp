@@ -6,11 +6,20 @@ import { AppModule } from './app.module';
 import { NestExpressApplication } from "@nestjs/platform-express";
 import { ApiExceptionHandler } from "./nest-common-utils";
 import { RedisManager } from "@tm/integrations";
+import { BadRequestException, ValidationPipe } from "@nestjs/common";
+import { Logger } from '@nestjs/common';
+import { ValidationError } from "class-validator";
+import { getAllConstraints } from "./nest-common-utils/custom-validation-error/custom-validation-error";
+
+const logger = new Logger('Main');
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     snapshot: true
   });
+
+  // Enable detailed logging
+  app.useLogger(logger);
 
   RedisManager.initializeGlobalRedisInstance();
 
@@ -18,6 +27,18 @@ async function bootstrap() {
   // app.use((req, res, next) => {
   //   next()
   // });
+
+  //using pipes for class validators
+  app.useGlobalPipes( new ValidationPipe({
+    disableErrorMessages: false,
+    transform: true,
+    dismissDefaultMessages: true,
+    enableDebugMessages: true,
+    exceptionFactory: ((errors: ValidationError[]) => {
+      //get all class validators error strings
+       return new BadRequestException(getAllConstraints(errors))
+    })
+  }));
 
   app.useGlobalFilters(new ApiExceptionHandler());
 
