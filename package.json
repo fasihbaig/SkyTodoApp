@@ -8,6 +8,9 @@
             "libs/*"
         ]
     },
+    "nohoist": [
+        "frontend/**"
+      ],
     "name": "TM-App",
     "version": "1.0.0",
     "description": "TODO Application for Demo Work",
