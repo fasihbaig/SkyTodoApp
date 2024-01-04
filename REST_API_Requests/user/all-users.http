@@ -9,7 +9,8 @@ Content-Type: {{contentType}}
 
 {
     "password": "asdf",
-    "email": "fasihbaig_7@gmail.com"
+    "emaill": "fasihbaig_7@gmail.com",
+    "email": "_7"
 }
 
 ###
