@@ -45,4 +45,4 @@ function Button({
     )
 }
 
-export default React.forwardRef(Button)
+export default Button
