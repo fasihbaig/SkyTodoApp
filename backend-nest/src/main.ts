@@ -18,6 +18,11 @@ async function bootstrap() {
     snapshot: true
   });
 
+  app.enableCors({
+    origin: '*',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  })
+
   // Enable detailed logging
   app.useLogger(logger);
 
@@ -29,19 +34,19 @@ async function bootstrap() {
   // });
 
   //using pipes for class validators
-  app.useGlobalPipes( new ValidationPipe({
+  app.useGlobalPipes(new ValidationPipe({
     disableErrorMessages: false,
     transform: true,
     dismissDefaultMessages: true,
     enableDebugMessages: true,
     exceptionFactory: ((errors: ValidationError[]) => {
       //get all class validators error strings
-       return new BadRequestException(getAllConstraints(errors))
+      return new BadRequestException(getAllConstraints(errors))
     })
   }));
 
   app.useGlobalFilters(new ApiExceptionHandler());
 
-  await app.listen( process.env.PORT || 3000);
+  await app.listen(process.env.PORT || 3000);
 }
 bootstrap();
