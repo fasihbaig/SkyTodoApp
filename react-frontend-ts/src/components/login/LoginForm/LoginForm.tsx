@@ -1,23 +1,43 @@
 import React from 'react'
 import { Input } from '../../ui-components'
 import Button from '../../ui-components/Button'
+import { useForm } from 'react-hook-form';
+import { AuthService } from '../../../services';
+
+interface LoginForm {
+    email: string;
+    password: string;
+}
 
 function LoginForm() {
+    const { register, handleSubmit, formState: { errors, isValid, isSubmitting } } = useForm<LoginForm>();
+
+    async function handleLogin(data: LoginForm) {
+        console.log(data);
+        const result = await AuthService.getInstance().login(data.email, data.password);
+        console.log(result)
+    }
+
     return (
         <>
             <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-                <form className="space-y-6" action='#'>
+                <form className="space-y-6" action='#' onSubmit={handleSubmit(handleLogin)}>
                     <div>
                         <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
-                            Email address
+                            Email / Username
                         </label>
                         <div className="mt-2">
                             <Input
                                 name="email"
-                                type="email"
+                                type="text"
                                 autoComplete="email"
-                                required
+                                register={
+                                    register("email", {
+                                        required: "Email or Username is required."
+                                    })
+                                }
                             />
+                            {errors?.email && <p className='text-xs text-red-600'>{errors.email.message}</p>}
                         </div>
                     </div>
 
@@ -37,14 +57,21 @@ function LoginForm() {
                                 name="password"
                                 type="password"
                                 autoComplete="current-password"
-                                required
+                                register={
+                                    register("password", {
+                                        required: "Password is is required."
+                                    })
+                                }
                             />
+                            {errors?.password && <p className='text-xs text-red-600'>{errors.password.message}</p>}
                         </div>
                     </div>
 
                     <div>
                         <Button
-                            type="submit">
+                            type="submit"
+                            disabled={!isValid || isSubmitting}
+                        >
                             Sign in
                         </Button>
                     </div>
