@@ -1,5 +1,5 @@
 import { Inject, Injectable, UseInterceptors, forwardRef } from '@nestjs/common';
-import { MONGOOSE, MONGOOSE_DB, User  } from "@tm/data-layer";
+import { MONGOOSE, MONGOOSE_DB, User } from "@tm/data-layer";
 import { TextHashManager } from "@tm/common";
 import { omit } from "lodash";
 import { RedisManager } from "@tm/integrations";
@@ -12,10 +12,10 @@ import { ApiTimeInterceptor } from '../../../../nest-common-utils/interceptors/'
 @Injectable()
 export class AuthorizationService {
     constructor(
-       private jwtAuthService: JwtAuthService,
-       private configService: ConfigService,
-       private userService: UserService,
-    ) {}
+        private jwtAuthService: JwtAuthService,
+        private configService: ConfigService,
+        private userService: UserService,
+    ) { }
 
     /**
      * 
@@ -23,20 +23,19 @@ export class AuthorizationService {
      * @param { string } password 
      */
     public async processLoginHandler(email: string, password: string) {
-        const user =  await this.userService.getUserByEmail(email);
-        if(!user) {
+        const user = await this.userService.getUserByEmail(email);
+        if (!user) {
             throw new Error("User not found.")
         }
 
         const isValidPassword = await TextHashManager.compareHash(user.password, password);
-        if(!isValidPassword) {
+        if (!isValidPassword) {
             throw new Error("Invalid User Credentials.")
         }
 
         const jwtToken = await this.generateAndSaveAuthToken(user);
 
         return {
-            user: omit(user.toObject(), ["password"]),
             token: jwtToken
         }
     }
@@ -53,11 +52,11 @@ export class AuthorizationService {
             email: user.get("email"),
             username: user.get("username"),
             createdDate: new Date().toLocaleString()
-        }); 
+        });
 
         await this.addTokenToRedis(jwtToken);
 
-        return jwtToken  
+        return jwtToken
     }
 
     /**
@@ -65,7 +64,7 @@ export class AuthorizationService {
      * @param { string } token 
      */
     private async addTokenToRedis(token: string): Promise<void> {
-       await RedisManager.getGlobalRedisInstance().addData(token, "1", this.configService.get<string>("auth.jwtTokenExpiryTimeSec"));
+        await RedisManager.getGlobalRedisInstance().addData(token, "1", this.configService.get<string>("auth.jwtTokenExpiryTimeSec"));
     }
 
 }
