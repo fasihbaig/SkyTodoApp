@@ -12,6 +12,7 @@ interface Props {
   type?: "email" | "text" | "number" | "password"
   autoComplete?: string
   required?: boolean
+  register?: any
 }
 
 function Input({
@@ -21,7 +22,8 @@ function Input({
   name,
   type = "text",
   autoComplete,
-  required
+  required,
+  register = null
 }: Props, ref?: LegacyRef<HTMLInputElement>) {
 
   const inputAttributes = {
@@ -38,6 +40,7 @@ function Input({
       onBlur={onBlur}
       {...inputAttributes}
       ref={ref}
+      {...(register && register)}
     />
   )
 }
