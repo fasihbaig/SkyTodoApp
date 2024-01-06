@@ -3,6 +3,7 @@ import { Input } from '../../ui-components'
 import Button from '../../ui-components/Button'
 import { useForm } from 'react-hook-form';
 import { AuthService } from '../../../services';
+import { redirect } from 'react-router-dom';
 
 interface LoginForm {
     email: string;
@@ -13,9 +14,9 @@ function LoginForm() {
     const { register, handleSubmit, formState: { errors, isValid, isSubmitting } } = useForm<LoginForm>();
 
     async function handleLogin(data: LoginForm) {
-        console.log(data);
         const result = await AuthService.getInstance().login(data.email, data.password);
-        console.log(result)
+        localStorage.setItem("token", result.token);
+        return redirect("/todos");
     }
 
     return (

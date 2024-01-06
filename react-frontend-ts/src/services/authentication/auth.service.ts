@@ -1,19 +1,27 @@
 import ApiClient from "../../utilities/axios";
+import { get } from "lodash";
 
 let instance: null | AuthService = null;
+
+export type LoginDTO = {
+    token: string,
+    user: {
+        email: string,
+        username: string,
+        _id: string
+    }
+}
 export class AuthService {
 
-    public async login(email: string, password: string) {
+    public async login(email: string, password: string): Promise<LoginDTO> {
         try {
-            const response = await ApiClient.put(`/login`, {
+            const response = await ApiClient.post(`/auth/login`, {
                 email,
                 password
             });
-            return response;
+            return response.data;
         } catch (error) {
-            console.error(error);
-            if ((error as Error).message) return (error as Error).message;
-            return "Unable to authenticate user."
+            throw new Error(get(error, "message") || "Unable to authenticate user.")
         }
     }
 
