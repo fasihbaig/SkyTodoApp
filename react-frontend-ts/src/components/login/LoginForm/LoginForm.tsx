@@ -1,9 +1,9 @@
-import React from 'react'
-import { Input } from '../../ui-components'
-import Button from '../../ui-components/Button'
-import { useForm } from 'react-hook-form';
+
+import { useForm, Controller } from 'react-hook-form';
 import { AuthService } from '../../../services';
-import { redirect } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import Button from '@mui/material/Button';
+import { TextField } from '@mui/material';
 
 interface LoginForm {
     email: string;
@@ -11,12 +11,14 @@ interface LoginForm {
 }
 
 function LoginForm() {
-    const { register, handleSubmit, formState: { errors, isValid, isSubmitting } } = useForm<LoginForm>();
+    const navigate = useNavigate();
+    const { handleSubmit, control, formState: { isValid, isSubmitting } } = useForm<LoginForm>({ mode: 'onChange' });
 
     async function handleLogin(data: LoginForm) {
         const result = await AuthService.getInstance().login(data.email, data.password);
         localStorage.setItem("token", result.token);
-        return redirect("/todos");
+        navigate("/todos", { replace: true })
+        return;
     }
 
     return (
@@ -24,53 +26,67 @@ function LoginForm() {
             <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
                 <form className="space-y-6" action='#' onSubmit={handleSubmit(handleLogin)}>
                     <div>
-                        <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
-                            Email / Username
-                        </label>
                         <div className="mt-2">
-                            <Input
+                            <Controller
                                 name="email"
-                                type="text"
-                                autoComplete="email"
-                                register={
-                                    register("email", {
-                                        required: "Email or Username is required."
-                                    })
-                                }
+                                control={control}
+                                defaultValue=""
+                                rules={{ required: true }}
+                                render={({ field, fieldState: { error } }) => (
+                                    <TextField
+                                        {...field}
+                                        id="email"
+                                        autoComplete='email'
+                                        label="Email / Username"
+                                        variant="outlined"
+                                        className='w-full'
+                                        type='text'
+                                        focused
+                                        error={!!error}
+                                        helperText={error && "Please provide an Email or Username."}
+                                    />
+                                )}
                             />
-                            {errors?.email && <p className='text-xs text-red-600'>{errors.email.message}</p>}
                         </div>
                     </div>
 
                     <div>
+
+                        <div className="mt-2">
+                            <Controller
+                                name="password"
+                                control={control}
+                                defaultValue=""
+                                rules={{ required: true }}
+                                render={({ field, fieldState: { error } }) => (
+                                    <TextField
+                                        {...field}
+                                        id="password"
+                                        autoComplete='password'
+                                        label="Password"
+                                        variant="outlined"
+                                        className='w-full'
+                                        type='password'
+                                        error={!!error}
+                                        helperText={error && "Please provide a password."}
+                                    />
+                                )}
+                            />
+
+                        </div>
                         <div className="flex items-center justify-between">
-                            <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
-                                Password
-                            </label>
                             <div className="text-sm">
                                 <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
                                     Forgot password?
                                 </a>
                             </div>
                         </div>
-                        <div className="mt-2">
-                            <Input
-                                name="password"
-                                type="password"
-                                autoComplete="current-password"
-                                register={
-                                    register("password", {
-                                        required: "Password is is required."
-                                    })
-                                }
-                            />
-                            {errors?.password && <p className='text-xs text-red-600'>{errors.password.message}</p>}
-                        </div>
                     </div>
 
-                    <div>
+                    <div className='text-center'>
                         <Button
-                            type="submit"
+                            type='submit'
+                            variant="contained"
                             disabled={!isValid || isSubmitting}
                         >
                             Sign in
