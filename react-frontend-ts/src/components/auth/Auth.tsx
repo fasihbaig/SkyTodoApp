@@ -1,11 +1,11 @@
 import { ReactNode } from 'react'
 import { Navigate } from 'react-router-dom';
 
-const Auth = ({ children }: { children: ReactNode }) => {
-
+const Auth = ({ children }: { children?: ReactNode }) => {
     const token = window.localStorage.getItem("token");
-    if (token)
-        return children;
+    if (token) {
+        return (!children) ? <Navigate to="/todos" replace /> : children
+    }
 
     return <Navigate to="/login" replace />
 }
