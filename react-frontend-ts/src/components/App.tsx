@@ -19,7 +19,7 @@ function App() {
   });
   return (
     <ThemeProvider theme={theme}>
-      <div className='bg-slate-800'>
+      <div className='bg-slate-800 h-screen'>
         <AppRouter />
       </div>
     </ThemeProvider>

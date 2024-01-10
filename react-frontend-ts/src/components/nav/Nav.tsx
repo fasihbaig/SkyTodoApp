@@ -2,7 +2,7 @@ import AccountsMenu from './AccountsMenu';
 
 function Nav() {
     return (
-        <nav className=' bg-slate-900  flex flex-col md:flex-row md:justify-between'>
+        <nav className=' flex flex-col md:flex-row md:justify-between'>
             <div className='flex flex-col md:flex-row md:justify-start w-full'>
                 <div className='flex justify-start'>
                     <img
