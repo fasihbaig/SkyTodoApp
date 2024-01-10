@@ -1,6 +1,3 @@
-import { Logout, Settings } from '@mui/icons-material';
-import { Avatar, Box, Divider, IconButton, ListItemIcon, Menu, MenuItem } from '@mui/material'
-import React from 'react'
 import AccountsMenu from './AccountsMenu';
 
 function Nav() {
