@@ -4,13 +4,13 @@
 @contentType = application/json
 
 # @name login
-POST http://{{host}}/api/auth/login
+POST http://localhost:3000/api/auth/login 
+ # http://{{host}}/api/auth/login
 Content-Type: {{contentType}}
 
 {
     "password": "asdf",
-    "emaill": "fasihbaig_7@gmail.com",
-    "email": "_7"
+    "email": "fasihbaig_7@gmail.com"
 }
 
 ###
