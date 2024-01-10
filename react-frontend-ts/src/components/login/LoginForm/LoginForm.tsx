@@ -76,7 +76,7 @@ function LoginForm() {
                         </div>
                         <div className="flex items-center justify-between">
                             <div className="text-sm">
-                                <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
+                                <a href="#" className="font-semibold text-gray-200 hover:text-gray-100">
                                     Forgot password?
                                 </a>
                             </div>
