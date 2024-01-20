@@ -1,10 +1,24 @@
 import React from 'react'
+import { useForm } from 'react-hook-form'
+
+interface SignUpForm {
+    userName: string,
+    email: string,
+    password: string,
+    confirmPassword: string,
+    gender: string,
+    name: string
+}
 
 function SignUpForm() {
-    return (
-        <div>
+    const { handleSubmit, control, formState: { isValid, isSubmitting } } = useForm<SignUpForm>({ mode: 'onChange' });
 
-        </div>
+    return (
+        <>
+            <form className='space-y-6'>
+
+            </form>
+        </>
     )
 }
 

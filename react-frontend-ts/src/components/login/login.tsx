@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import LoginForm from './LoginForm/LoginForm'
+import { Link } from 'react-router-dom'
 
 function login() {
     useEffect(() => { window.document.title = "Login" }, [])
@@ -18,9 +19,9 @@ function login() {
             <LoginForm />
             <p className="mt-10 text-center text-sm text-gray-500">
                 Not a member?{' '}
-                <a href="#" className="font-semibold leading-6 text-gray-200 hover:text-gray-100">
-                    Create New Account
-                </a>
+                <Link to="/signup" className="font-semibold leading-6 text-gray-200 hover:text-gray-100">
+                    <span> Create New Account</span>
+                </Link>
             </p>
         </div>
     )

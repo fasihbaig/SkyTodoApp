@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import SignUpForm from './SignUpForm.tsx/SignUpForm'
 
 
 function SignUp() {
@@ -12,11 +13,8 @@ function SignUp() {
                     src="/public/logo-no-background.svg"
                     alt="Task Snap"
                 />
-                <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-200">
-                    Task Snap
-                </h2>
             </div>
-            Signup form in progress
+            <SignUpForm />
             <div className='mt-10 text-center font-bold text-gray-500'>
                 <Link to="/login"> <span>Back To Login</span></Link>
             </div>
