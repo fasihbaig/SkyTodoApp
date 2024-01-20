@@ -3,14 +3,14 @@
     "workspaces": {
         "packages": [
             "data-layer",
-            "frontend-react",
+            "react-frontend-ts",
             "backend-nest",
             "libs/*"
         ]
     },
     "nohoist": [
         "frontend/**"
-      ],
+    ],
     "name": "TM-App",
     "version": "1.0.0",
     "description": "TODO Application for Demo Work",
