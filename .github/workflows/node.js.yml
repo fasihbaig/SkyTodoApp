@@ -33,6 +33,8 @@ jobs:
           yarn install --frozen-lockfile
           pwd
     - run: |
+        bash ./bash-scripts/build.sh
+    - run: |
        cd backend-nest
        touch .env
        echo "${{secrets.PROD_ENV}}" > .env
