@@ -29,6 +29,7 @@ jobs:
         cache: 'npm'
     - run: |
           find . -name "node_modules" -type d -prune -exec rm -rf '{}' +
+          npm install yarn -g
           yarn install --frozen-lockfile
           pwd
     - run: |
