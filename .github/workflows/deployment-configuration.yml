@@ -1,0 +1,35 @@
+# Git workflow file for deployment to QA and Staging environment
+name: Deployment Configuration - AWS ECS
+run-name: Deploy to ${{ inputs.environment }} by @${{ github.actor }}
+
+on:
+  workflow_call: # This workflow will run manually
+    inputs:
+      environment:
+        description: 'Environment to deploy (e.g. QA or STAGING)'
+        required: true
+        type: string
+
+    outputs:
+      environment:
+        description: 'Environment to deploy (e.g. QA or STAGING)'
+        value: ${{ jobs.environment_validation.outputs.environment }}
+
+jobs:
+  environment_validation:
+    runs-on: ubuntu-latest
+
+    outputs:
+      environment: ${{ steps.setting_value.outputs.environment }}
+    steps:
+      - name: Validate Environment Input
+        id: validate_input
+        run: |
+          chosen_environment=${{ github.event.inputs.environment }}
+          if [ $chosen_environment != "QA" ] && [ $chosen_environment != "STAGING" ]; then
+            echo "Invalid environment. Please choose either QA or STAGING."
+            exit 1
+          fi
+      - name: Set Environment Output
+        id: setting_value
+        run: echo "environment=${{ github.event.inputs.environment }}" >> $GITHUB_OUTPUT
