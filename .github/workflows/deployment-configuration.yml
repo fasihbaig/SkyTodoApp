@@ -6,7 +6,7 @@ on:
   workflow_dispatch: # This workflow will run manually
     inputs:
       environment:
-        description: 'Environment to deploy (e.g. QA or STAGING)'
+        description: ' Drowpdown to select environment for deployment.'
         required: true
         type: environment
 
@@ -14,18 +14,23 @@ jobs:
   environment_validation:
     runs-on: ubuntu-latest
 
-    outputs:
-      environment: ${{ steps.setting_value.outputs.environment }}
+    # outputs:
+    #   environment: ${{ steps.setting_value.outputs.environment }}
     steps:
-      - name: Validate Environment Input
-        id: validate_input
-        run: |
-          chosen_environment=${{ github.event.inputs.environment }}
-          if [ $chosen_environment != "QA" ] && [ $chosen_environment != "STAGING" ]; then
-            echo "Invalid environment. Please choose either QA or STAGING."
-            exit 1
-          fi
-          echo "Input environment ${{ github.event.inputs.environment }} is valid."
-      - name: Set Environment Output
-        id: setting_value
-        run: echo "environment=${{ github.event.inputs.environment }}" >> $GITHUB_OUTPUT
+      #  We will do this validation if environment is not a type of environment
+      # - name: Validate Environment Input
+      #   id: validate_input
+      #   run: |
+      #     chosen_environment=${{ github.event.inputs.environment }}
+      #     if [ $chosen_environment != "QA" ] && [ $chosen_environment != "STAGING" ]; then
+      #       echo "Invalid environment. Please choose either QA or STAGING."
+      #       exit 1
+      #     fi
+      #     echo "Input environment ${{ github.event.inputs.environment }} is valid."
+      - name: Environment
+        id: environment
+        run: echo "Starting Deployment for Environment => ${{ github.event.inputs.environment }}"
+      - name: Start Deployment Workflow
+        uses: ./.github/workflows/deployment-aws.yml
+        with:
+          environment: ${{ github.event.inputs.environment }}
