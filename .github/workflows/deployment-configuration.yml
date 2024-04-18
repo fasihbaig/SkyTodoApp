@@ -8,10 +8,7 @@ on:
       environment:
         description: 'Environment to deploy (e.g. QA or STAGING)'
         required: true
-        type: choice
-        options:
-          - QA
-          - STAGING
+        type: environment
 
 jobs:
   environment_validation:
