@@ -3,14 +3,11 @@
 name: Deploy to ECS Fargate - Deployment
 
 on:
-  workflow_run:
-    workflows: ['Deployment Configuration - AWS ECS']
-    types:
-      - completed
+  workflow_dispatch: # This workflow will run manually
 
 jobs:
   environmentConfiguration:
-    uses: elegsys/nd-pulse/.github/workflows/deployment-configuration.yml@main
+    uses: fasihbaig/SkyTodoApp/.github/workflows/deployment-configuration.yml@main
 
   deploy:
     runs-on: ubuntu-latest
