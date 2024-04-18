@@ -21,7 +21,8 @@ jobs:
       - name: Environment
         id: environment
         run: echo "Starting Deployment for Environment => ${{ github.event.inputs.environment }}"
-      # - name: Start Deployment Workflow
-      #   uses: ./.github/workflows/deployment-aws.yml
-      #   with:
-      #     environment: ${{ github.event.inputs.environment }}
+        
+      - name: Start Deployment Workflow
+        uses: fasihbaig/SkyTodoApp/.github/workflows/deployment-aws.yml@main
+        with:
+          environment: ${{ github.event.inputs.environment }}
