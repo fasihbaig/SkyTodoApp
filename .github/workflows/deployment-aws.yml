@@ -4,18 +4,22 @@ name: Deploy to ECS Fargate
 
 on:
   workflow_call:
+    inputs:
+      environment:
+        description: 'Environment to deploy (e.g. QA or STAGING)'
+        required: true
+        type: string
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     environment:
-      name: ${{ github.event.workflow_run.outputs.environment }}
+      name: ${{ github.event.inputs.environment }}
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-        
+
       - name: Deployment Info
         run: echo "Starting Deployment for Environment => ${{ github.event.workflow_run.outputs.environment }}"
-        
