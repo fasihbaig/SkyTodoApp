@@ -14,19 +14,10 @@ jobs:
   environment_validation:
     runs-on: ubuntu-latest
 
-    # outputs:
-    #   environment: ${{ steps.setting_value.outputs.environment }}
     steps:
-      #  We will do this validation if environment is not a type of environment
-      # - name: Validate Environment Input
-      #   id: validate_input
-      #   run: |
-      #     chosen_environment=${{ github.event.inputs.environment }}
-      #     if [ $chosen_environment != "QA" ] && [ $chosen_environment != "STAGING" ]; then
-      #       echo "Invalid environment. Please choose either QA or STAGING."
-      #       exit 1
-      #     fi
-      #     echo "Input environment ${{ github.event.inputs.environment }} is valid."
+      - name: Checkout code
+        uses: actions/checkout@v2
+      
       - name: Environment
         id: environment
         run: echo "Starting Deployment for Environment => ${{ github.event.inputs.environment }}"
